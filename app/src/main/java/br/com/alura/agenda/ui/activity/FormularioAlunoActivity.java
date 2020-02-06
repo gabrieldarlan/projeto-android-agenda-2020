@@ -33,11 +33,15 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
         // Recebendo o aluno da lista
         Intent dados = getIntent();
-        aluno = (Aluno) dados.getSerializableExtra("aluno");
-        campoNome.setText(aluno.getNome());
-        campoTelefone.setText(aluno.getTelefone());
-        campoEmail.setText(aluno.getEmail());
-        // Recebendo o aluno da lista
+        if (dados.hasExtra("aluno")) {
+            aluno = (Aluno) dados.getSerializableExtra("aluno");
+            campoNome.setText(aluno.getNome());
+            campoTelefone.setText(aluno.getTelefone());
+            campoEmail.setText(aluno.getEmail());
+            // Recebendo o aluno da lista
+        } else {
+            aluno = new Aluno();
+        }
     }
 
     private void configuraBotaoSalvar() {
@@ -45,13 +49,15 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Aluno alunoCriado = preencheAluno();
-//                salva(alunoCriado);
-
                 preencheAluno();
-                dao.edita(aluno);
-                finish();
 
+                if (aluno.temIdValido()) {
+                    dao.edita(aluno);
+                } else {
+                    dao.salva(aluno);
+                }
+
+                finish();
 
             }
         });
@@ -61,11 +67,6 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         campoNome = findViewById(R.id.activity_formulario_aluno_nome);
         campoTelefone = findViewById(R.id.activity_formulario_aluno_telefone);
         campoEmail = findViewById(R.id.activity_formulario_aluno_email);
-    }
-
-    private void salva(Aluno alunoCriado) {
-        dao.salva(alunoCriado);
-        finish();
     }
 
     private void preencheAluno() {
