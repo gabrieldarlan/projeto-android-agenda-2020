@@ -22,7 +22,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private EditText campoEmail;
     private final AlunoDao dao = new AlunoDao();
     private Aluno aluno;
-
+    int maria;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
