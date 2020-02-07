@@ -2,6 +2,7 @@ package br.com.alura.agenda.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -67,8 +68,15 @@ public class ListaAlunosActivity extends AppCompatActivity {
         ListView listaDeAlunos = findViewById(R.id.activity_lista_alunos_listview);
         final List<Aluno> alunos = dao.todos();
         configuraAdapter(listaDeAlunos, alunos);
-
         configuraListenerDeCliquePorItem(listaDeAlunos);
+        listaDeAlunos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int posicao, long id) {
+                Aluno alunoEscolhido = (Aluno) adapterView.getItemAtPosition(posicao);
+                dao.remover(alunoEscolhido);
+                return true;
+            }
+        });
     }
 
     private void configuraListenerDeCliquePorItem(ListView listaDeAlunos) {
